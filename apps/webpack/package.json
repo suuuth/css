@@ -1,5 +1,5 @@
 {
-  "name": "webpack-setup",
+  "name": "webpack-css-setup",
   "version": "1.0.0",
   "description": "Webpack Setup",
   "main": "index.js",
@@ -17,7 +17,7 @@
     "javascript"
   ],
   "author": "Kevin Sutherland",
-  "license": "Commerical",
+  "license": "UNLICENSED",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",

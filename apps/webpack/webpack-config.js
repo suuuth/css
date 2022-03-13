@@ -1,66 +1,86 @@
+
 // Require path.
-const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const TerserJSPlugin = require('terser-webpack-plugin');
-const fs = require('fs');
+const path    = require('path');
+const fs      = require('fs');
+const webpack = require('webpack');
+const MiniCssExtractPlugin    = require("mini-css-extract-plugin");
+const TerserJSPlugin          = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
 // Configuration object.
 const CssUrlRelativePlugin = require('css-url-relative-plugin');
-const webpack = require('webpack');
 
-const aliases = processAliases();
-const frontEndCssEntryPoints = processCssEntryPoints();
-const backendEndCssEntryPoints = processCssEntryPoints(false, "backend");
-const frontEndCssMinifiedEntryPoints = processCssEntryPoints(true);
-const backEndCssMinifiedEntryPoints = processCssEntryPoints(true, "backend");
+console.log(__dirname);
 
-function processAliases() {
-    let config = JSON.parse(fs.readFileSync('/apps/webpack/config.json', 'utf8'), true);
+const cssPath        = '/public/css';
+const webpackPath    = '/webpack';
+const aliases        = processAliases();
+const cssEntryPoints = processCssEntryPoints();
+const cssMinifiedEntryPoints = processCssEntryPoints(true);
+
+function processAliases()
+{
     let aliases = {};
+    let config = JSON.parse(
+        fs.readFileSync(webpackPath + '/config.json', 'utf8'),
+        true
+    );
+
     for (let [key, value] of Object.entries(config.aliases)) {
         aliases[key] = path.join(__dirname, value);
     }
+
     return aliases;
 }
 
-function processCssEntryPoints(minified = false, area = "frontend") {
-    let config = JSON.parse(fs.readFileSync('/apps/webpack/config.json', 'utf8'), true);
+function processCssEntryPoints(minified = false)
+{
     let entryPoints = {};
-    let entries = area === "frontend" ? config.cssEntryPoints : config.backendCssEntryPoints
-    for (let [key, value] of Object.entries(entries)) {
+    let config = JSON.parse(
+        fs.readFileSync(webpackPath + '/config.json', 'utf8'),
+        true
+    );
+
+    for (let [key, value] of Object.entries(config.cssEntryPoints)) {
         if (minified) {
-            entryPoints['app.' + key + '.dist.min.js'] = value + '/app.config.js';
+            entryPoints['app.' + key + '.dist.min.js'] = value + '/../config/app.config.js';
         } else {
-            entryPoints['app.' + key + '.dist.js'] = value + '/app.config.css';
+            entryPoints['app.' + key + '.dist.js'] = value + '/../config/app.config.css';
         }
     }
+
     return entryPoints;
 }
 
-console.log(frontEndCssEntryPoints);
-
-//For development side of the website, generates app.css using imported files in app.config.js
+// For development side of the website, generates
+// app.css using imported files in app.config.js
 var cssConfig = Object.assign(
-    buildCssConfig("frontend"),
+    buildCssConfig(),
     {
         mode: 'development',
         devtool: 'source-map',
-        entry: frontEndCssEntryPoints
+        entry: cssEntryPoints
     }
 );
 
 //For production side of the website, generates app.min.css using imported files in app.config.js
 //This optimizes the css
 var cssConfigMin = Object.assign(
-    buildMinCssConfig("frontend"),
+    buildMinCssConfig(),
     {
         mode: 'production',
-        entry: frontEndCssMinifiedEntryPoints,
+        entry: cssMinifiedEntryPoints,
         optimization: {
-            minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({map: {inline: false}})],
+            minimizer: [
+                new TerserJSPlugin({}),
+                new OptimizeCSSAssetsPlugin({
+                    map: {
+                        inline: false
+                    }
+                })
+            ],
         },
         plugins: [
-
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // both options are optional
@@ -76,15 +96,15 @@ var cssConfigMin = Object.assign(
     }
 );
 
-function buildCssConfig(location) {
+function buildCssConfig()
+{
 // Configuration object.
     return {
         resolve: {},
         output: {
-            path: path.resolve(__dirname, '/css/'),
+            path: path.resolve(__dirname, cssPath),
             filename: '[name]',
             sourceMapFilename: '[name].map',
-            // devtoolModuleFilenameTemplate: (info) => 'file://' + path.resolve(info.absoluteResourcePath)
         },
         devtool: 'source-map',
         // Setup a loader to transpile down the latest and great JavaScript so older browsers
@@ -95,7 +115,14 @@ function buildCssConfig(location) {
                     test: /\.css$/,
                     use: [
                         'style-loader',
-                        {loader: 'css-loader', options: {url: true, sourceMap: true, import: true}},
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: true,
+                                sourceMap: true,
+                                import: true
+                            }
+                        },
                         {
                             loader: 'postcss-loader',
                             options: {
@@ -126,15 +153,15 @@ function buildCssConfig(location) {
     }
 }
 
-function buildMinCssConfig(location) {
+function buildMinCssConfig()
+{
 // Configuration object.
-    console.log();
     return {
         resolve: {
             alias: aliases
         },
         output: {
-            path: path.resolve(__dirname, '/css/'),
+            path: path.resolve(__dirname, cssPath),
             filename: '[name]',
             sourceMapFilename: '[name].map'
         },
@@ -150,10 +177,16 @@ function buildMinCssConfig(location) {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
                                 publicPathRelativeToSource: true,
-                                publicPath: '/css',
+                                publicPath: cssPath,
                             }
                         },
-                        {loader: 'css-loader', options: {url: false, sourceMap: true}},
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                url: false,
+                                sourceMap: true
+                            }
+                        },
                         {
                             loader: 'postcss-loader',
                             options: {
