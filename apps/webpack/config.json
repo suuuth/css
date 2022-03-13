@@ -1,0 +1,21 @@
+{
+  "aliases": {
+    "theme": "../public_html/packages/ae_theme/themes/ae",
+    "ae_blocks": "../public_html/packages/ae_theme/blocks",
+    "ae_msu_blocks": "../public_html/packages/ae_msu/blocks",
+    "node_modules": "./node_modules",
+    "modernizr$": ".modernizrrc"
+  },
+  "cssEntryPoints": {
+    "main": "./../public_html/assets/frontend/css"
+  },
+  "backendCssEntryPoints": {
+    "main": "./../public_html/assets/backend/css"
+  },
+  "jsEntryPoints": {
+    "main": "./../public_html/assets/frontend/js"
+  },
+  "backendJsEntryPoints": {
+    "main": "./../public_html/assets/backend/js"
+  }
+}
