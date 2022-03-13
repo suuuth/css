@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  webpack:
+    build: ./docker_files/webpackdocker
+    volumes:
+      - ./public_html/:/public_html
+      - ./apps/webpack/:/webpack
+    labels:
+      - "traefik.backend=${COMPOSE_PROJECT_NAME}-webpack"
+      - "traefik.expose=false"
+networks:
+  traefik:
+    external:
+      name: traefik
+  default:
