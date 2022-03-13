@@ -1,7 +1,7 @@
 {
-  "name": "ae-webpack-setup",
+  "name": "webpack-setup",
   "version": "1.0.0",
-  "description": "AE Webpack Setup",
+  "description": "Webpack Setup",
   "main": "index.js",
   "babel": {
     "presets": [
@@ -13,11 +13,10 @@
     "build": "webpack --mode=production --config webpack-config.js"
   },
   "keywords": [
-    "wordpress",
     "webpack",
     "javascript"
   ],
-  "author": "AE",
+  "author": "Kevin Sutherland",
   "license": "Commerical",
   "devDependencies": {
     "@babel/cli": "^7.1.5",

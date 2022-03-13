@@ -12,7 +12,7 @@ const processPackageFiles = () => {
     let packageDependencies = [];
     let sortedPackageDependencies = {};
 
-    let topPackageFile = fs.readFileSync('/webpack/package.json', 'utf8');
+    let topPackageFile = fs.readFileSync('/apps/webpack/package.json', 'utf8');
     let packageFiles = fs.readdirSync('/public_html/packages', {});
     packageFiles.forEach((folder) => {
         if (fs.existsSync('/public_html/packages/' + folder + '/package.json')) {
@@ -35,7 +35,7 @@ const processPackageFiles = () => {
     }
     packageAssetsJson = JSON.parse(JSON.stringify(sortedPackageDependencies));
     topPackageFileJson["dependencies"] = packageAssetsJson;
-    fs.writeFileSync('/webpack/package.json', JSON.stringify(topPackageFileJson), {encoding: "utf8"});
+    fs.writeFileSync('/apps/webpack/package.json', JSON.stringify(topPackageFileJson), {encoding: "utf8"});
 
     packageLocations.forEach((location) => {
         let packageFiles = JSON.parse(fs.readFileSync(location.file, {}), true);
@@ -83,16 +83,16 @@ const processAssets = (packageLocations) => {
     packageLocations.forEach((file) => {
 
         let content = JSON.parse(fs.readFileSync(file.file, {}), true);
-        let config = JSON.parse(fs.readFileSync('/webpack/config.json', {}), true);
+        let config = JSON.parse(fs.readFileSync('/apps/webpack/config.json', {}), true);
         for (let [key, value] of Object.entries(content['webpack']['alias'])) {
             alias[key] = value;
         }
         config.aliases = alias;
-        config.cssEntryPoints = {"main": "./../public_html/assets/frontend/css"}
+        config.cssEntryPoints = {"main": "./../../css/source"}
         config.backendCssEntryPoints = {"main": "./../public_html/assets/backend/css"}
         config.jsEntryPoints = {"main": "./../public_html/assets/frontend/js"}
         config.backendJsEntryPoints = {"main": "./../public_html/assets/backend/js"}
-        fs.writeFileSync('/webpack/config.json', JSON.stringify(config), {encoding: "utf8"});
+        fs.writeFileSync('/apps/webpack/config.json', JSON.stringify(config), {encoding: "utf8"});
 
 
         if (!content['webpack']['assets']['frontend']['css']['separateEntryPoint']) {
@@ -134,7 +134,7 @@ const processAssets = (packageLocations) => {
 
 const processMainCssAssets = (assets, location, alias) => {
 
-    let dir = '/public_html/assets/' + location;
+    let dir = '/css/source/';
     let standard = [];
     let mediaQueries = {};
     let lib = [];
@@ -221,9 +221,9 @@ const processSeparateCssAssets = (assets, location, file, alias) => {
     creatDir(location, file);
     createFiles(dir);
 
-    let config = JSON.parse(fs.readFileSync('/webpack/config.json', {}), true);
+    let config = JSON.parse(fs.readFileSync('/apps/webpack/config.json', {}), true);
     config.cssEntryPoints[file.name] = "./.." + dir + '/css';
-    fs.writeFileSync('/webpack/config.json', JSON.stringify(config), {encoding: "utf8"});
+    fs.writeFileSync('/apps/webpack/config.json', JSON.stringify(config), {encoding: "utf8"});
 
 
 

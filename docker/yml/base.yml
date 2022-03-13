@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   webpack:
-    build: ./docker_files/webpackdocker
+    build: ./docker/dockerfiles/development/webpack
     volumes:
       - ./public_html/:/public_html
       - ./apps/webpack/:/webpack

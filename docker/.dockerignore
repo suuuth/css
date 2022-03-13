@@ -1,6 +1,0 @@
-./.git/*
-./data
-./gulp/node_modules/*
-./gulp/node_modules
-./data/*
-./public_html/application/config/*
