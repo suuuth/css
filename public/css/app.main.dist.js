@@ -125,7 +125,8 @@ module.exports = content.locals || {};
 // Imports
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../webpack/node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(true);
-exports.push([module.i, "@import url(/public/css/source/reset-master.css);"]);
+exports.push([module.i, "@import url(/public/css/source/variables.css);"]);
+exports.push([module.i, "@import url(/public/css/source/browser-reset.css);"]);
 exports.push([module.i, "@import url(/public/css/source/spacing.css);"]);
 exports.push([module.i, "@import url(/public/css/source/utility.css);"]);
 // Module
