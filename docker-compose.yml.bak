@@ -9,7 +9,7 @@ services:
       context: ./docker/dockerfiles/development/webpack
       dockerfile: Dockerfile
     volumes:
-      - ./public/:/public_html
+      - ./public/:/public
       - ./apps/webpack/:/webpack
     labels:
       - "traefik.backend=${COMPOSE_PROJECT_NAME}-webpack"

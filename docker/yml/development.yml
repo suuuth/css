@@ -3,6 +3,7 @@
 ## DO NOT MODIFY: Unless absolutely necessary.
 version: '3.7'
 networks:
+  default: {}
   traefik:
-    external:
-      name: traefik
+    external: true
+    name: traefik

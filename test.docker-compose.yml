@@ -1,0 +1,17 @@
+networks:
+  default: {}
+  traefik:
+    external: true
+    name: traefik
+services:
+  webpack:
+    build:
+      context: /home/kevin/Projects/css/docker/dockerfiles/development/webpack
+    labels:
+      traefik.backend: css-webpack
+      traefik.expose: "false"
+    volumes:
+    - /home/kevin/Projects/css/docker/yml/public:/public:rw
+    - /home/kevin/Projects/css/docker/yml/apps/webpack:/webpack:rw
+version: '3.7'
+

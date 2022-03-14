@@ -115,7 +115,7 @@ case $BRANCH in
         echo "Performing operations on development"
         OUTPUT=docker-compose
         echo "Building docker-compose.yml"
-        docker-compose -f docker/yml/base.yml config > docker-compose.yml
+        docker-compose -f docker/yml/base.yml -f docker/yml/development.yml config > docker-compose.yml
         clean_compose_paths
         if [ "$OPERATION" = "build" ] || [ "$OPERATION" = "build-push" ]
         then
